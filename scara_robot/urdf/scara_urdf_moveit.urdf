@@ -1,0 +1,192 @@
+<?xml version="1.0" ?>
+<robot name="my_scara">
+    <material name="blue">
+        <color rgba="0.0 0.0 0.1 1.0" />
+    </material>
+    <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0" />
+    </material>
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+    </material>
+    <material name="red">
+        <color rgba="1.0 0.0 0.0 1.0" />
+    </material>
+    <link name="world" />
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.05" radius="0.3" />
+            </geometry>
+            <material name="white" />
+        </visual>
+    </link>
+    <joint name="world_to_base_link" type="fixed">
+        <parent link="world" />
+        <child link="base_link" />
+    </joint>
+    <link name="link_1">
+        <visual>
+            <geometry>
+                <box size="0.25 0.25 0.4" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.2" />
+            <material name="blue" />
+        </visual>
+    </link>
+    <joint name="base_to_link_1" type="fixed">
+        <parent link="base_link" />
+        <child link="link_1" />
+    </joint>
+    <link name="r_link_1_2">
+        <visual>
+            <geometry>
+                <cylinder length="0.2" radius="0.125" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.5" />
+            <material name="white" />
+        </visual>
+    </link>
+    <joint name="link_1_r1" type="fixed">
+        <parent link="link_1" />
+        <child link="r_link_1_2" />
+    </joint>
+    <link name="r_link_2">
+        <visual>
+            <geometry>
+                <box size="0.095 0.2 0.2" />
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.1725 0.0 0.0" />
+            <material name="red" />
+        </visual>
+    </link>
+    <joint name="rotate_link_2" type="revolute">
+        <parent link="r_link_1_2" />
+        <child link="r_link_2" />
+        <origin xyz="0.0 0.0 0.5" />
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-2.5" upper="2.5" velocity="0.2" />
+        <material name="white" />
+    </joint>
+    <link name="r_link_3">
+        <visual>
+            <geometry>
+                <cylinder length="0.2" radius="0.08" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" />
+            <material name="white" />
+        </visual>
+    </link>
+    <joint name="link_2_r2" type="fixed">
+        <parent link="r_link_2" />
+        <child link="r_link_3" />
+        <origin xyz="0.3 0.0 0.0" />
+        <material name="white" />
+    </joint>
+    <link name="link_3">
+        <visual>
+            <geometry>
+                <box size="0.14 0.15 0.15" />
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.15 0.0 0.0" />
+            <material name="red" />
+        </visual>
+    </link>
+    <joint name="rotate_link_3" type="revolute">
+        <parent link="r_link_3" />
+        <child link="link_3" />
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-2.0" upper="2.0" velocity="0.2" />
+    </joint>
+    <link name="prism_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.15" radius="0.08" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" />
+            <material name="white" />
+        </visual>
+    </link>
+    <joint name="Pre_prismatic" type="fixed">
+        <parent link="link_3" />
+        <child link="prism_link" />
+        <origin xyz="0.3 0.0 0.0" />
+    </joint>
+    <link name="shift_prism">
+        <visual>
+            <geometry>
+                <cylinder length="0.05" radius="0.02" />
+            </geometry>
+            <material name="blue" />
+            <origin xyz="0.0 0.0 0.0" />
+        </visual>
+    </link>
+    <joint name="shift_joint" type="prismatic">
+        <parent link="prism_link" />
+        <child link="prism_joint" />
+        <limit effort="1000.0" upper="0.45" lower="0.0" velocity="0.2" />
+        <axis xyz="0 0 1" />
+        <origin rpy="3.14 0.0 0.0" xyz="0.0 0.0 0.0" />
+    </joint>
+    <link name="prism_joint">
+        <visual>
+            <geometry>
+                <cylinder length="0.5" radius="0.05" />
+            </geometry>
+            <origin xyz="0.0 0.0 -0.175" />
+        </visual>
+    </link>
+    <joint name="rotate_prism" type="revolute">
+        <parent link="prism_joint" />
+        <child link="shift_prism" />
+        <limit effort="1000.0" upper="3.0" lower="-3.0" velocity="0.2" />
+        <axis xyz="0 0 1" />
+        <origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0" />
+    </joint>
+    
+<transmission name="trans_rotate_link_2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="rotate_link_2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="rotate_link_2_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_rotate_link_3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="rotate_link_3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="rotate_link_3_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_shift_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="shift_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="shift_joint_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_rotate_prism">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="rotate_prism">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="rotate_prism_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>

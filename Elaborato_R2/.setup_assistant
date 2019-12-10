@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: scara_robot
+    relative_path: urdf/scara_urdf.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/my_scara.srdf
+  CONFIG:
+    author_name: Mirko Albanese
+    author_email: mirko.albanese@studenti.univr.it
+    generated_timestamp: 1575661823

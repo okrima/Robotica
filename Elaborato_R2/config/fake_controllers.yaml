@@ -1,0 +1,7 @@
+controller_list:
+  - name: fake_Gripper_controller
+    joints:
+      - rotate_link_2
+      - rotate_link_3
+      - shift_joint
+      - rotate_prism

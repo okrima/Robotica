@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="my_scara">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="Gripper">
+        <joint name="link_1_r1" />
+        <joint name="rotate_link_2" />
+        <joint name="link_2_r2" />
+        <joint name="rotate_link_3" />
+        <joint name="Pre_prismatic" />
+        <joint name="shift_joint" />
+        <joint name="rotate_prism" />
+    </group>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="Gripper" parent_link="prism_joint" group="Gripper" />
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="base_link" link2="link_1" reason="Adjacent" />
+    <disable_collisions link1="base_link" link2="link_3" reason="Never" />
+    <disable_collisions link1="base_link" link2="prism_link" reason="Never" />
+    <disable_collisions link1="base_link" link2="r_link_1_2" reason="Never" />
+    <disable_collisions link1="base_link" link2="r_link_2" reason="Never" />
+    <disable_collisions link1="base_link" link2="r_link_3" reason="Never" />
+    <disable_collisions link1="base_link" link2="shift_prism" reason="Never" />
+    <disable_collisions link1="link_1" link2="link_3" reason="Never" />
+    <disable_collisions link1="link_1" link2="prism_joint" reason="Never" />
+    <disable_collisions link1="link_1" link2="prism_link" reason="Never" />
+    <disable_collisions link1="link_1" link2="r_link_1_2" reason="Adjacent" />
+    <disable_collisions link1="link_1" link2="r_link_2" reason="Default" />
+    <disable_collisions link1="link_1" link2="r_link_3" reason="Never" />
+    <disable_collisions link1="link_1" link2="shift_prism" reason="Never" />
+    <disable_collisions link1="link_3" link2="prism_joint" reason="Never" />
+    <disable_collisions link1="link_3" link2="prism_link" reason="Adjacent" />
+    <disable_collisions link1="link_3" link2="r_link_1_2" reason="Never" />
+    <disable_collisions link1="link_3" link2="r_link_3" reason="Adjacent" />
+    <disable_collisions link1="link_3" link2="shift_prism" reason="Never" />
+    <disable_collisions link1="prism_joint" link2="prism_link" reason="Adjacent" />
+    <disable_collisions link1="prism_joint" link2="r_link_1_2" reason="Never" />
+    <disable_collisions link1="prism_joint" link2="r_link_2" reason="Never" />
+    <disable_collisions link1="prism_joint" link2="r_link_3" reason="Never" />
+    <disable_collisions link1="prism_joint" link2="shift_prism" reason="Adjacent" />
+    <disable_collisions link1="prism_link" link2="r_link_1_2" reason="Never" />
+    <disable_collisions link1="prism_link" link2="r_link_2" reason="Never" />
+    <disable_collisions link1="prism_link" link2="r_link_3" reason="Never" />
+    <disable_collisions link1="prism_link" link2="shift_prism" reason="Default" />
+    <disable_collisions link1="r_link_1_2" link2="r_link_2" reason="Adjacent" />
+    <disable_collisions link1="r_link_1_2" link2="r_link_3" reason="Never" />
+    <disable_collisions link1="r_link_1_2" link2="shift_prism" reason="Never" />
+    <disable_collisions link1="r_link_2" link2="r_link_3" reason="Adjacent" />
+    <disable_collisions link1="r_link_2" link2="shift_prism" reason="Never" />
+    <disable_collisions link1="r_link_3" link2="shift_prism" reason="Never" />
+</robot>
